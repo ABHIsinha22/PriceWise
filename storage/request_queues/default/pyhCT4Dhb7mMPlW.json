@@ -1,0 +1,9 @@
+{
+	"id": "pyhCT4Dhb7mMPlW",
+	"json": "{\"id\":\"pyhCT4Dhb7mMPlW\",\"url\":\"https://www.flipkart.com/redmi-mi-xiaomi-80-cm-32-inch-hd-ready-led-smart-fire-tv-dolby-audio-dts-virtual-x/p/itma8872f63ed16a?pid=TVSHFABSEZGW7HHF&marketplace=FLIPKART\",\"loadedUrl\":\"https://www.flipkart.com/redmi-mi-xiaomi-80-cm-32-inch-hd-ready-led-smart-fire-tv-dolby-audio-dts-virtual-x/p/itma8872f63ed16a?pid=TVSHFABSEZGW7HHF&marketplace=FLIPKART\",\"uniqueKey\":\"https://www.flipkart.com/redmi-mi-xiaomi-80-cm-32-inch-hd-ready-led-smart-fire-tv-dolby-audio-dts-virtual-x/p/itma8872f63ed16a?marketplace=FLIPKART&pid=TVSHFABSEZGW7HHF\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"product\",\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-10-09T12:11:31.955Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.flipkart.com/redmi-mi-xiaomi-80-cm-32-inch-hd-ready-led-smart-fire-tv-dolby-audio-dts-virtual-x/p/itma8872f63ed16a?marketplace=FLIPKART&pid=TVSHFABSEZGW7HHF",
+	"url": "https://www.flipkart.com/redmi-mi-xiaomi-80-cm-32-inch-hd-ready-led-smart-fire-tv-dolby-audio-dts-virtual-x/p/itma8872f63ed16a?pid=TVSHFABSEZGW7HHF&marketplace=FLIPKART"
+}

@@ -1,0 +1,47 @@
+body {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .product-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 1rem;
+    text-align: left;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  
+  .product-card .title {
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+  }
+  
+  .price-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .price-box.winner {
+    border-color: #1173d4;
+    background-color: #ebf4ff;
+  }
+  
+  .price-box .store {
+    font-weight: 500;
+    color: #334155;
+  }
+  
+  .price-box .price {
+    font-weight: bold;
+    color: #0f172a;
+  }
