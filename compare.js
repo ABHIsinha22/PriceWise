@@ -1,56 +1,15 @@
-// Import necessary Node.js modules
 const { exec } = require('child_process');
 const fs = require('fs');
-const csv = require('csv-parser');
-const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const path = require('path'); // Add this line
-// --- Function to save comparison results to a CSV file ---
-async function saveResultsToCsv(results, productName) {
-    if (!results || results.length === 0) {
-        return;
-    }
+const path = require('path');
+const csv = require('csv-parser'); // Still needed for reading
 
-    // --- CHANGES START HERE ---
-
-    // 1. Define the output directory
-    const outputDir = 'comparison_results';
-
-    // 2. Ensure the directory exists
-    fs.mkdirSync(outputDir, { recursive: true });
-
-    // 3. Create the full file path
-    const sanitizedProductName = productName.replace(/\s+/g, '_');
-    const filename = `comparison_results_${sanitizedProductName}.csv`;
-    const filePath = path.join(outputDir, filename);
-
-    // --- CHANGES END HERE ---
-
-    const csvWriter = createCsvWriter({
-        path: filePath, // Use the new full file path
-        header: [
-            { id: 'title', title: 'TITLE' },
-            { id: 'amazonPrice', title: 'AMAZON_PRICE' },
-            { id: 'flipkartPrice', title: 'FLIPKART_PRICE' },
-            { id: 'winner', title: 'CHEAPER_ON' },
-        ],
-    });
-
-    try {
-        await csvWriter.writeRecords(results);
-        console.error(`[INFO] Comparison results saved to ${filePath}`);
-    } catch (error) {
-        console.error(`[ERROR] Failed to write CSV file: ${error.message}`);
-    }
-}
-
-
-// --- Main Function (with corrected file paths) ---
+// --- Main Function ---
 async function main() {
     const output = {
         logs: [],
         results: []
     };
-    let productName = ''; // Define productName here to be accessible in the finally block
+    let productName = '';
 
     try {
         const args = process.argv.slice(2);
@@ -58,18 +17,15 @@ async function main() {
             throw new Error('Please provide a product name and the number of pages.');
         }
 
-        productName = args[0]; // Assign value to the higher-scoped variable
+        productName = args[0];
         const numPages = args[1];
         
         const sanitizedProductName = productName.replace(/\s+/g, '_');
 
-        // --- CHANGE IS HERE ---
-        // Point to the correct file paths inside the subfolders
         const amazonFile = path.join('amazon_results', `scraped_amazon_${sanitizedProductName}.csv`);
         const flipkartFile = path.join('flipkart_results', `scraped_flipkart_${sanitizedProductName}.csv`);
-        // --- END OF CHANGE ---
         
-        output.logs.push('🚀 Starting scrapers for Amazon and Flipkart...');
+        output.logs.push(' Starting scrapers for Amazon and Flipkart...');
         
         const amazonCommand = `node amazon-scraper.js "${productName}" ${numPages}`;
         const flipkartCommand = `node flipkart-scraper.js "${productName}" ${numPages}`;
@@ -89,27 +45,26 @@ async function main() {
         let commonProductsFound = 0;
         for (const flipkartProduct of flipkartData) {
             const amazonMatch = findMatchingProduct(flipkartProduct, amazonData);
-
+        
             if (amazonMatch) {
                 commonProductsFound++;
-                
+        
                 const flipkartPrice = parsePrice(flipkartProduct.price);
                 const amazonPrice = parsePrice(amazonMatch.price);
-
+        
                 let winner = 'Same Price';
                 if (!isNaN(flipkartPrice) && !isNaN(amazonPrice)) {
-                    if (flipkartPrice < amazonPrice) {
-                        winner = 'Flipkart';
-                    } else if (amazonPrice < flipkartPrice) {
-                        winner = 'Amazon';
-                    }
+                    if (flipkartPrice < amazonPrice) winner = 'Flipkart';
+                    else if (amazonPrice < flipkartPrice) winner = 'Amazon';
                 }
-                
+        
                 output.results.push({
                     title: flipkartProduct.title,
                     flipkartPrice: flipkartPrice,
                     amazonPrice: amazonPrice,
-                    winner: winner
+                    winner: winner,
+                    amazonLink: amazonMatch.link || '',
+                    flipkartLink: flipkartProduct.link || ''
                 });
             }
         }
@@ -118,7 +73,7 @@ async function main() {
             output.logs.push("\nCouldn't find any common products between the two sites based on their titles.");
         }
 
-        await saveResultsToCsv(output.results, productName);
+        // The saveResultsToCsv function call has been removed from here
 
     } catch (error) {
         output.logs.push(`❌ An error occurred: ${error.message}`);
@@ -127,7 +82,7 @@ async function main() {
     }
 }
 
-// --- Helper Functions (No changes here) ---
+// --- Helper Functions ---
 function runScript(command) {
     return new Promise((resolve, reject) => {
         exec(command, (error, stdout, stderr) => {

@@ -10,38 +10,70 @@ document.addEventListener('DOMContentLoaded', () => {
   const clearCacheBtn = document.getElementById('clear-cache-btn');
   const cachedContainer = document.getElementById('cached-products-container');
 
-  // Helper: create product card
+  // Helper: create clickable product card
   function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'p-4 border rounded-lg bg-white dark:bg-background-dark shadow';
 
     const amazonPrice = product.amazonPrice || Infinity;
     const flipkartPrice = product.flipkartPrice || Infinity;
+    const amazonLink = product.amazonLink || null;
+    const flipkartLink = product.flipkartLink || null;
 
+    // Highlight cheaper option
     const amazonClass = amazonPrice <= flipkartPrice ? 'bg-green-100 dark:bg-green-900' : '';
     const flipkartClass = flipkartPrice < amazonPrice ? 'bg-green-100 dark:bg-green-900' : '';
 
     card.innerHTML = `
-      <h3 class="font-bold text-lg">${product.title}</h3>
+      <h3 class="font-bold text-lg mb-2">${product.title}</h3>
       <div class="grid grid-cols-2 gap-4 mt-2">
-        <div class="p-2 border rounded ${amazonClass}">
+        <div class="p-2 border rounded ${amazonClass} hover:scale-105 transition-transform cursor-pointer" id="amazon-box">
           <div class="font-semibold">Amazon</div>
           <div>₹${isNaN(amazonPrice) ? 'N/A' : amazonPrice.toLocaleString()}</div>
+          ${
+            amazonLink
+              ? `<a href="${amazonLink}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline text-sm block mt-1">View on Amazon</a>`
+              : '<span class="text-gray-500 text-sm block mt-1">No link</span>'
+          }
         </div>
-        <div class="p-2 border rounded ${flipkartClass}">
+
+        <div class="p-2 border rounded ${flipkartClass} hover:scale-105 transition-transform cursor-pointer" id="flipkart-box">
           <div class="font-semibold">Flipkart</div>
           <div>₹${isNaN(flipkartPrice) ? 'N/A' : flipkartPrice.toLocaleString()}</div>
+          ${
+            flipkartLink
+              ? `<a href="${flipkartLink}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline text-sm block mt-1">View on Flipkart</a>`
+              : '<span class="text-gray-500 text-sm block mt-1">No link</span>'
+          }
         </div>
       </div>
     `;
+
+    // Optional: make whole box clickable
+    if (amazonLink) {
+      card.querySelector('#amazon-box').addEventListener('click', () =>
+        window.open(amazonLink, '_blank')
+      );
+    }
+    if (flipkartLink) {
+      card.querySelector('#flipkart-box').addEventListener('click', () =>
+        window.open(flipkartLink, '_blank')
+      );
+    }
+
     return card;
   }
 
   // --- Search / Compare ---
   form.addEventListener('submit', async e => {
     e.preventDefault();
-    const productName = productNameInput.value;
+    const productName = productNameInput.value.trim();
     const numPages = numPagesInput.value;
+
+    if (!productName) {
+      logOutput.textContent = '⚠️ Please enter a product name.';
+      return;
+    }
 
     logOutput.textContent = 'Preparing to scrape...';
     resultsGrid.innerHTML = '';
@@ -57,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const data = await res.json();
 
-      if (!Array.isArray(data)) throw new Error('Invalid data format');
+      if (!Array.isArray(data)) throw new Error('Invalid data format from backend');
 
       resultsGrid.innerHTML = '';
       data.forEach(product => resultsGrid.appendChild(createProductCard(product)));
@@ -92,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         cachedContainer.appendChild(btn);
       });
-      logOutput.textContent = '  products loaded';
+      logOutput.textContent = `${names.length} cached products loaded`;
     } catch (err) {
       console.error(err);
       logOutput.textContent = '❌ Failed to load cached products';
@@ -114,9 +146,10 @@ document.addEventListener('DOMContentLoaded', () => {
       logOutput.textContent = data.message || 'Cache cleared';
     } catch (err) {
       console.error(err);
-      logOutput.textContent = ' Failed to clear cache';
+      logOutput.textContent = '❌ Failed to clear cache';
     } finally {
       loader.classList.add('hidden');
     }
+    
   });
 });

@@ -20,7 +20,7 @@ let db;
       password: 'password',    // ⚠️ Replace with your MySQL password
       database: 'scraper_db'
     });
-    console.log('✅ Connected to MySQL');
+    console.log('Connected to MySQL');
   } catch (err) {
     console.error('❌ MySQL connection failed:', err);
   }
