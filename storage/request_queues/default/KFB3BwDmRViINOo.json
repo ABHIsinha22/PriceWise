@@ -1,9 +1,0 @@
-{
-	"id": "KFB3BwDmRViINOo",
-	"json": "{\"id\":\"KFB3BwDmRViINOo\",\"url\":\"https://www.flipkart.com/search?q=MI+tv&page=2\",\"loadedUrl\":\"https://www.flipkart.com/search?q=MI+tv&page=2\",\"uniqueKey\":\"https://www.flipkart.com/search?page=2&q=MI+tv\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-10-09T12:11:19.214Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.flipkart.com/search?page=2&q=MI+tv",
-	"url": "https://www.flipkart.com/search?q=MI+tv&page=2"
-}

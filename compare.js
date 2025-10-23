@@ -1,15 +1,60 @@
+// Import necessary Node.js modules
 const { exec } = require('child_process');
 const fs = require('fs');
-const path = require('path');
-const csv = require('csv-parser'); // Still needed for reading
+const csv = require('csv-parser');
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const path = require('path'); // Add this line
+// --- Function to save comparison results to a CSV file ---
+async function saveResultsToCsv(results, productName) {
+    if (!results || results.length === 0) {
+        return;
+    }
 
-// --- Main Function ---
+    // --- CHANGES START HERE ---
+
+    // 1. Define the output directory
+    const outputDir = 'comparison_results';
+
+    // 2. Ensure the directory exists
+    fs.mkdirSync(outputDir, { recursive: true });
+
+    // 3. Create the full file path
+    const sanitizedProductName = productName.replace(/\s+/g, '_');
+    const filename = `comparison_results_${sanitizedProductName}.csv`;
+    const filePath = path.join(outputDir, filename);
+
+    // --- CHANGES END HERE ---
+
+    const csvWriter = createCsvWriter({
+        path: filePath,
+        header: [
+            { id: 'title', title: 'TITLE' },
+            { id: 'amazonPrice', title: 'AMAZON_PRICE' },
+            { id: 'flipkartPrice', title: 'FLIPKART_PRICE' },
+            { id: 'winner', title: 'CHEAPER_ON' },
+            { id: 'amazonLink', title: 'AMAZON_LINK' },
+            { id: 'flipkartLink', title: 'FLIPKART_LINK' },
+            { id: 'amazonImage', title: 'AMAZON_IMAGE' },       // ✅ add this
+            { id: 'flipkartImage', title: 'FLIPKART_IMAGE' }    // ✅ add this
+        ],
+    });
+
+    try {
+        await csvWriter.writeRecords(results);
+        console.error(`[INFO] Comparison results saved to ${filePath}`);
+    } catch (error) {
+        console.error(`[ERROR] Failed to write CSV file: ${error.message}`);
+    }
+}
+
+
+// --- Main Function (with corrected file paths) ---
 async function main() {
     const output = {
         logs: [],
         results: []
     };
-    let productName = '';
+    let productName = ''; // Define productName here to be accessible in the finally block
 
     try {
         const args = process.argv.slice(2);
@@ -17,15 +62,18 @@ async function main() {
             throw new Error('Please provide a product name and the number of pages.');
         }
 
-        productName = args[0];
+        productName = args[0]; // Assign value to the higher-scoped variable
         const numPages = args[1];
         
         const sanitizedProductName = productName.replace(/\s+/g, '_');
 
+        // --- CHANGE IS HERE ---
+        // Point to the correct file paths inside the subfolders
         const amazonFile = path.join('amazon_results', `scraped_amazon_${sanitizedProductName}.csv`);
         const flipkartFile = path.join('flipkart_results', `scraped_flipkart_${sanitizedProductName}.csv`);
+        // --- END OF CHANGE ---
         
-        output.logs.push(' Starting scrapers for Amazon and Flipkart...');
+        output.logs.push('🚀 Starting scrapers for Amazon and Flipkart...');
         
         const amazonCommand = `node amazon-scraper.js "${productName}" ${numPages}`;
         const flipkartCommand = `node flipkart-scraper.js "${productName}" ${numPages}`;
@@ -64,7 +112,9 @@ async function main() {
                     amazonPrice: amazonPrice,
                     winner: winner,
                     amazonLink: amazonMatch.link || '',
-                    flipkartLink: flipkartProduct.link || ''
+                    flipkartLink: flipkartProduct.link || '',
+                    amazonImage: amazonMatch.image || '',      // new
+                    flipkartImage: flipkartProduct.image || '' // new
                 });
             }
         }
@@ -73,7 +123,7 @@ async function main() {
             output.logs.push("\nCouldn't find any common products between the two sites based on their titles.");
         }
 
-        // The saveResultsToCsv function call has been removed from here
+        await saveResultsToCsv(output.results, productName);
 
     } catch (error) {
         output.logs.push(`❌ An error occurred: ${error.message}`);
@@ -82,7 +132,7 @@ async function main() {
     }
 }
 
-// --- Helper Functions ---
+// --- Helper Functions (No changes here) ---
 function runScript(command) {
     return new Promise((resolve, reject) => {
         exec(command, (error, stdout, stderr) => {
@@ -99,10 +149,20 @@ function readCsv(filePath) {
         if (!fs.existsSync(filePath)) {
             return reject(new Error(`File not found at ${filePath}. One of the scrapers might have failed.`));
         }
+
         const results = [];
+
         fs.createReadStream(filePath)
             .pipe(csv({ mapHeaders: ({ header }) => header.toLowerCase() }))
-            .on('data', (data) => results.push(data))
+            .on('data', (data) => {
+                // Normalize keys and include image
+                results.push({
+                    title: data.title || '',
+                    price: data.price || '',
+                    link: data.link || '',
+                    image: data.image || '' // <-- ensure image is captured
+                });
+            })
             .on('end', () => resolve(results))
             .on('error', (error) => reject(error));
     });

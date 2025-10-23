@@ -1,6 +1,6 @@
 const express = require('express');
 const { exec } = require('child_process');
-const mysql = require('mysql2/promise');
+const mongoose = require('mongoose');
 const path = require('path');
 
 const app = express();
@@ -10,21 +10,21 @@ const PORT = 3000;
 app.use(express.static('public'));
 app.use(express.json());
 
-// --- MySQL connection ---
-let db;
-(async () => {
-  try {
-    db = await mysql.createConnection({
-      host: 'localhost',
-      user: 'root',             // ⚠️ Replace with your MySQL username
-      password: 'password',    // ⚠️ Replace with your MySQL password
-      database: 'scraper_db'
-    });
-    console.log('Connected to MySQL');
-  } catch (err) {
-    console.error('❌ MySQL connection failed:', err);
-  }
-})();
+// --- Connect to MongoDB ---
+mongoose.connect('mongodb://127.0.0.1:27017/scraper_db', {
+ 
+})
+.then(() => console.log('✅ Connected to MongoDB'))
+.catch(err => console.error('❌ MongoDB connection failed:', err));
+
+// --- Define Mongoose Schema ---
+const scraperCacheSchema = new mongoose.Schema({
+  query: { type: String, required: true, unique: true },
+  results: { type: mongoose.Schema.Types.Mixed },
+  last_updated: { type: Date, default: Date.now },
+});
+
+const ScraperCache = mongoose.model('ScraperCache', scraperCacheSchema);
 
 // --- Compare endpoint ---
 app.post('/compare', async (req, res) => {
@@ -33,12 +33,14 @@ app.post('/compare', async (req, res) => {
 
   try {
     // 1️⃣ Check cache first
-    const [rows] = await db.execute('SELECT * FROM scraper_cache WHERE query = ?', [productName]);
-    if (rows.length > 0 && !refresh) {
-      let cached = rows[0];
-      let data = cached.results;
-      if (typeof cached.results === 'string') data = JSON.parse(cached.results);
-      return res.json(Array.isArray(data.results) ? data.results : data);
+    const cached = await ScraperCache.findOne({ query: productName });
+    if (cached && !refresh) {
+      console.log(`📦 Returning cached data for: ${productName}`);
+      return res.json(
+        Array.isArray(cached.results?.results)
+          ? cached.results.results
+          : cached.results
+      );
     }
 
     // 2️⃣ Run scraper
@@ -56,17 +58,14 @@ app.post('/compare', async (req, res) => {
         jsonData = JSON.parse(stdout);
       } catch (parseError) {
         console.error('JSON Parse Error:', parseError, stdout);
-        return res.status(500).send(`Invalid JSON from scraper`);
+        return res.status(500).send('Invalid JSON from scraper');
       }
 
-      // 3️⃣ Store in cache
-      await db.execute(
-        `INSERT INTO scraper_cache (query, results)
-         VALUES (?, ?)
-         ON DUPLICATE KEY UPDATE
-           results = VALUES(results),
-           last_updated = CURRENT_TIMESTAMP`,
-        [productName, JSON.stringify(jsonData)]
+      // 3️⃣ Store/Update cache
+      await ScraperCache.findOneAndUpdate(
+        { query: productName },
+        { results: jsonData, last_updated: Date.now() },
+        { upsert: true, new: true }
       );
 
       res.json(jsonData.results || []);
@@ -81,15 +80,13 @@ app.post('/compare', async (req, res) => {
 // --- Get all cached products ---
 app.get('/cache', async (req, res) => {
   try {
-    const [rows] = await db.execute('SELECT query, results FROM scraper_cache ORDER BY last_updated DESC');
-    const formatted = rows.map(r => {
-      let parsedResults = r.results;
-      if (typeof r.results === 'string') {
-        try { parsedResults = JSON.parse(r.results); } 
-        catch (err) { console.error('Failed to parse JSON from DB:', err); }
-      }
-      return { query: r.query, results: Array.isArray(parsedResults.results) ? parsedResults.results : parsedResults };
-    });
+    const items = await ScraperCache.find().sort({ last_updated: -1 });
+    const formatted = items.map(item => ({
+      query: item.query,
+      results: Array.isArray(item.results?.results)
+        ? item.results.results
+        : item.results,
+    }));
     res.json(formatted);
   } catch (err) {
     console.error(err);
@@ -100,8 +97,8 @@ app.get('/cache', async (req, res) => {
 // --- Get cached product names only ---
 app.get('/cache/names', async (req, res) => {
   try {
-    const [rows] = await db.execute('SELECT query FROM scraper_cache ORDER BY last_updated DESC');
-    const names = rows.map(r => r.query);
+    const items = await ScraperCache.find().sort({ last_updated: -1 });
+    const names = items.map(item => item.query);
     res.json(names);
   } catch (err) {
     console.error('Failed to fetch cached product names:', err);
@@ -112,7 +109,7 @@ app.get('/cache/names', async (req, res) => {
 // --- Clear all cache ---
 app.delete('/cache', async (req, res) => {
   try {
-    await db.execute('DELETE FROM scraper_cache');
+    await ScraperCache.deleteMany({});
     res.json({ message: '✅ All cached products cleared.' });
   } catch (err) {
     console.error(err);

@@ -36,10 +36,20 @@ async function scrapeProductsConcurrently(browser, productURLs, concurrency = 5)
           .then(p => `₹${p.replace(/[,.]/g, '')}`)
           .catch(() => 'N/A');
 
-        scrapedData.push({ title, price, link: url });
-        console.log(`   -> Scraped: ${title.substring(0, 40)}...`);
+        // 🔹 Try to get product image URL
+        let image = await productPage.$eval('#landingImage', el => el.src)
+          .catch(async () => {
+            return await productPage.$eval('#imgTagWrapperId img', el => el.src)
+              .catch(async () => {
+                return await productPage.$eval('img.a-dynamic-image', el => el.src)
+                  .catch(() => 'N/A');
+              });
+          });
 
-        await delay(Math.floor(Math.random() * 1500) + 500); // Small random delay
+        scrapedData.push({ title, price, image, link: url });
+        console.log(`   -> Scraped: ${title.substring(0, 50)}...`);
+
+        await delay(Math.floor(Math.random() * 1500) + 500);
         await productPage.close();
       } catch (err) {
         console.log(`   -> Failed for ${url.substring(0, 60)}... Error: ${err.message}`);
@@ -156,6 +166,7 @@ async function saveToCsv(data, searchTerm) {
     header: [
       { id: 'title', title: 'TITLE' },
       { id: 'price', title: 'PRICE' },
+      { id: 'image', title: 'IMAGE' },
       { id: 'link', title: 'LINK' },
     ],
     encoding: 'utf8',
@@ -163,7 +174,7 @@ async function saveToCsv(data, searchTerm) {
 
   try {
     await csvWriter.writeRecords(data);
-    console.log(`\nSuccess! Data saved to ${filePath}`);
+    console.log(`\n✅ Success! Data saved to ${filePath}`);
   } catch (error) {
     console.error("Error writing to CSV:", error);
   }

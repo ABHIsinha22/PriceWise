@@ -1,0 +1,9 @@
+{
+	"id": "F5ZlulsXfgcTQaj",
+	"json": "{\"id\":\"F5ZlulsXfgcTQaj\",\"url\":\"https://www.flipkart.com/nike-air-max-tw-sneakers-men/p/itm2acb9bc2d56a6?pid=SHOHA8KSQZFYXRFF&marketplace=FLIPKART\",\"loadedUrl\":\"https://www.flipkart.com/nike-air-max-tw-sneakers-men/p/itm2acb9bc2d56a6?pid=SHOHA8KSQZFYXRFF&marketplace=FLIPKART\",\"uniqueKey\":\"https://www.flipkart.com/nike-air-max-tw-sneakers-men/p/itm2acb9bc2d56a6?marketplace=FLIPKART&pid=SHOHA8KSQZFYXRFF\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"product\",\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-10-23T08:37:44.842Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.flipkart.com/nike-air-max-tw-sneakers-men/p/itm2acb9bc2d56a6?marketplace=FLIPKART&pid=SHOHA8KSQZFYXRFF",
+	"url": "https://www.flipkart.com/nike-air-max-tw-sneakers-men/p/itm2acb9bc2d56a6?pid=SHOHA8KSQZFYXRFF&marketplace=FLIPKART"
+}

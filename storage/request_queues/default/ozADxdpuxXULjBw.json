@@ -1,0 +1,9 @@
+{
+	"id": "ozADxdpuxXULjBw",
+	"json": "{\"id\":\"ozADxdpuxXULjBw\",\"url\":\"https://www.flipkart.com/nike-air-max-excee-sneakers-women/p/itmae27412d7cfe2?pid=SHOGYHQZEZJ94DAS&marketplace=FLIPKART\",\"loadedUrl\":\"https://www.flipkart.com/nike-air-max-excee-sneakers-women/p/itmae27412d7cfe2?pid=SHOGYHQZEZJ94DAS&marketplace=FLIPKART\",\"uniqueKey\":\"https://www.flipkart.com/nike-air-max-excee-sneakers-women/p/itmae27412d7cfe2?marketplace=FLIPKART&pid=SHOGYHQZEZJ94DAS\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"product\",\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-10-23T08:37:18.319Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.flipkart.com/nike-air-max-excee-sneakers-women/p/itmae27412d7cfe2?marketplace=FLIPKART&pid=SHOGYHQZEZJ94DAS",
+	"url": "https://www.flipkart.com/nike-air-max-excee-sneakers-women/p/itmae27412d7cfe2?pid=SHOGYHQZEZJ94DAS&marketplace=FLIPKART"
+}
