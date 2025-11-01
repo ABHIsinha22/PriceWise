@@ -1,0 +1,9 @@
+{
+	"id": "iBsjU8B7Q84lx6l",
+	"json": "{\"id\":\"iBsjU8B7Q84lx6l\",\"url\":\"https://www.flipkart.com/search?q=sony+bravia&page=2\",\"loadedUrl\":\"https://www.flipkart.com/search?q=sony+bravia&page=2\",\"uniqueKey\":\"https://www.flipkart.com/search?page=2&q=sony+bravia\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-11-01T19:34:43.622Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.flipkart.com/search?page=2&q=sony+bravia",
+	"url": "https://www.flipkart.com/search?q=sony+bravia&page=2"
+}
