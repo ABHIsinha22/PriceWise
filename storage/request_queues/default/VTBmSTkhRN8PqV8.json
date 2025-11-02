@@ -1,0 +1,9 @@
+{
+	"id": "VTBmSTkhRN8PqV8",
+	"json": "{\"id\":\"VTBmSTkhRN8PqV8\",\"url\":\"https://www.flipkart.com/nike-air-max-alpha-trainer-5-sneakers-men/p/itm86f1d076eb68e?pid=SHOGTHZ2K9PC86AC&marketplace=FLIPKART\",\"loadedUrl\":\"https://www.flipkart.com/nike-air-max-alpha-trainer-5-sneakers-men/p/itm86f1d076eb68e?pid=SHOGTHZ2K9PC86AC&marketplace=FLIPKART\",\"uniqueKey\":\"https://www.flipkart.com/nike-air-max-alpha-trainer-5-sneakers-men/p/itm86f1d076eb68e?marketplace=FLIPKART&pid=SHOGTHZ2K9PC86AC\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"product\",\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-10-23T08:37:17.260Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.flipkart.com/nike-air-max-alpha-trainer-5-sneakers-men/p/itm86f1d076eb68e?marketplace=FLIPKART&pid=SHOGTHZ2K9PC86AC",
+	"url": "https://www.flipkart.com/nike-air-max-alpha-trainer-5-sneakers-men/p/itm86f1d076eb68e?pid=SHOGTHZ2K9PC86AC&marketplace=FLIPKART"
+}

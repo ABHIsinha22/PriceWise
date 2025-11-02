@@ -2,6 +2,7 @@ const express = require('express');
 const { exec } = require('child_process');
 const mongoose = require('mongoose');
 const path = require('path');
+
 const app = express();
 const PORT = 3000;
 
@@ -43,9 +44,7 @@ app.post('/compare', async (req, res) => {
     }
 
     // 2️⃣ Run scraper
-    // Use path.join to make the command cross-platform compatible
-    const compareScriptPath = path.join(__dirname, 'compare.js');
-    const command = `node "${compareScriptPath}" "${productName}" ${numPages}`;
+    const command = `node compare.js "${productName}" ${numPages}`;
     console.log(`🚀 Running: ${command}`);
 
     exec(command, async (error, stdout, stderr) => {
@@ -56,19 +55,9 @@ app.post('/compare', async (req, res) => {
 
       let jsonData;
       try {
-        // --- FIX START ---
-        // Find the last non-empty line from stdout.
-        // This makes parsing robust even if scrapers console.log debug messages.
-        const lines = stdout.trim().split('\n');
-        const lastLine = lines[lines.length - 1];
-        
-        // Try to parse only that last line.
-        jsonData = JSON.parse(lastLine);
-        // --- FIX END ---
-
+        jsonData = JSON.parse(stdout);
       } catch (parseError) {
-        // Log the *full* stdout to see what junk data we received
-        console.error('JSON Parse Error:', parseError, 'Full stdout:', stdout);
+        console.error('JSON Parse Error:', parseError, stdout);
         return res.status(500).send('Invalid JSON from scraper');
       }
 

@@ -5,4 +5,7 @@
 *.xlsx
 *.png
 node_modules
-compare old version
+amazon_results
+comparison_results
+flipkart_results
+storage

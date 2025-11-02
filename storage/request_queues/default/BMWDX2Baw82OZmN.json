@@ -1,0 +1,9 @@
+{
+	"id": "BMWDX2Baw82OZmN",
+	"json": "{\"id\":\"BMWDX2Baw82OZmN\",\"url\":\"https://www.flipkart.com/nike-air-max-270-sneakers-men/p/itm64035130eda54?pid=SHOHYFKDQAHJ8ATV&marketplace=FLIPKART\",\"loadedUrl\":\"https://www.flipkart.com/nike-air-max-270-sneakers-men/p/itm64035130eda54?pid=SHOHYFKDQAHJ8ATV&marketplace=FLIPKART\",\"uniqueKey\":\"https://www.flipkart.com/nike-air-max-270-sneakers-men/p/itm64035130eda54?marketplace=FLIPKART&pid=SHOHYFKDQAHJ8ATV\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"product\",\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-10-23T08:37:42.171Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.flipkart.com/nike-air-max-270-sneakers-men/p/itm64035130eda54?marketplace=FLIPKART&pid=SHOHYFKDQAHJ8ATV",
+	"url": "https://www.flipkart.com/nike-air-max-270-sneakers-men/p/itm64035130eda54?pid=SHOHYFKDQAHJ8ATV&marketplace=FLIPKART"
+}

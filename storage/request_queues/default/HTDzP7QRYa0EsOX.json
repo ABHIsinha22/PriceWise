@@ -1,0 +1,9 @@
+{
+	"id": "HTDzP7QRYa0EsOX",
+	"json": "{\"id\":\"HTDzP7QRYa0EsOX\",\"url\":\"https://www.flipkart.com/nike-air-max-bolt-sneakers-men/p/itm2adbab3d26879?pid=SHOHCTZTZHTJZ2PQ&marketplace=FLIPKART\",\"loadedUrl\":\"https://www.flipkart.com/nike-air-max-bolt-sneakers-men/p/itm2adbab3d26879?pid=SHOHCTZTZHTJZ2PQ&marketplace=FLIPKART\",\"uniqueKey\":\"https://www.flipkart.com/nike-air-max-bolt-sneakers-men/p/itm2adbab3d26879?marketplace=FLIPKART&pid=SHOHCTZTZHTJZ2PQ\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"product\",\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-10-23T08:37:18.681Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.flipkart.com/nike-air-max-bolt-sneakers-men/p/itm2adbab3d26879?marketplace=FLIPKART&pid=SHOHCTZTZHTJZ2PQ",
+	"url": "https://www.flipkart.com/nike-air-max-bolt-sneakers-men/p/itm2adbab3d26879?pid=SHOHCTZTZHTJZ2PQ&marketplace=FLIPKART"
+}
