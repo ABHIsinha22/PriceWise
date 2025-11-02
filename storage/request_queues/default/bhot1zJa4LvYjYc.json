@@ -1,9 +1,0 @@
-{
-	"id": "bhot1zJa4LvYjYc",
-	"json": "{\"id\":\"bhot1zJa4LvYjYc\",\"url\":\"https://www.flipkart.com/nike-air-max-fusion-sneakers-men/p/itma49f5e738dc9b?pid=SHOHCTZTMYKP3VEP&marketplace=FLIPKART\",\"loadedUrl\":\"https://www.flipkart.com/nike-air-max-fusion-sneakers-men/p/itma49f5e738dc9b?pid=SHOHCTZTMYKP3VEP&marketplace=FLIPKART\",\"uniqueKey\":\"https://www.flipkart.com/nike-air-max-fusion-sneakers-men/p/itma49f5e738dc9b?marketplace=FLIPKART&pid=SHOHCTZTMYKP3VEP\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"product\",\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-10-23T08:37:17.457Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.flipkart.com/nike-air-max-fusion-sneakers-men/p/itma49f5e738dc9b?marketplace=FLIPKART&pid=SHOHCTZTMYKP3VEP",
-	"url": "https://www.flipkart.com/nike-air-max-fusion-sneakers-men/p/itma49f5e738dc9b?pid=SHOHCTZTMYKP3VEP&marketplace=FLIPKART"
-}

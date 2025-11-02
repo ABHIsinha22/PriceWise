@@ -1,9 +1,0 @@
-{
-	"id": "3ijK1KIZXmFNPMC",
-	"json": "{\"id\":\"3ijK1KIZXmFNPMC\",\"url\":\"https://www.flipkart.com/nike-air-max-tavas-sneakers-men/p/itm385c00e3faa6f?pid=SHOGTHZBNYYAJBPA&marketplace=FLIPKART\",\"loadedUrl\":\"https://www.flipkart.com/nike-air-max-tavas-sneakers-men/p/itm385c00e3faa6f?pid=SHOGTHZBNYYAJBPA&marketplace=FLIPKART\",\"uniqueKey\":\"https://www.flipkart.com/nike-air-max-tavas-sneakers-men/p/itm385c00e3faa6f?marketplace=FLIPKART&pid=SHOGTHZBNYYAJBPA\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"product\",\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-10-23T08:37:42.092Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.flipkart.com/nike-air-max-tavas-sneakers-men/p/itm385c00e3faa6f?marketplace=FLIPKART&pid=SHOGTHZBNYYAJBPA",
-	"url": "https://www.flipkart.com/nike-air-max-tavas-sneakers-men/p/itm385c00e3faa6f?pid=SHOGTHZBNYYAJBPA&marketplace=FLIPKART"
-}

@@ -1,9 +1,0 @@
-{
-	"id": "g5bfVj9WJSO14Ss",
-	"json": "{\"id\":\"g5bfVj9WJSO14Ss\",\"url\":\"https://www.flipkart.com/nike-air-max-90-ess-sneakers-men/p/itm42d7340201680?pid=SHOHD2VWQPX7BPVR&marketplace=FLIPKART\",\"loadedUrl\":\"https://www.flipkart.com/nike-air-max-90-ess-sneakers-men/p/itm42d7340201680?pid=SHOHD2VWQPX7BPVR&marketplace=FLIPKART\",\"uniqueKey\":\"https://www.flipkart.com/nike-air-max-90-ess-sneakers-men/p/itm42d7340201680?marketplace=FLIPKART&pid=SHOHD2VWQPX7BPVR\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"label\":\"product\",\"__crawlee\":{\"crawlDepth\":1,\"enqueueStrategy\":\"same-hostname\",\"state\":4}},\"handledAt\":\"2025-10-23T08:37:40.329Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://www.flipkart.com/nike-air-max-90-ess-sneakers-men/p/itm42d7340201680?marketplace=FLIPKART&pid=SHOHD2VWQPX7BPVR",
-	"url": "https://www.flipkart.com/nike-air-max-90-ess-sneakers-men/p/itm42d7340201680?pid=SHOHD2VWQPX7BPVR&marketplace=FLIPKART"
-}
