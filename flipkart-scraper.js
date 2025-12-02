@@ -29,7 +29,7 @@ async function saveToCsv(data, searchTerm) {
 
     try {
         await csvWriter.writeRecords(data);
-        log.info(`✅ Success! Data for ${data.length} products saved to ${filePath}`);
+        log.info(`Success! Data for ${data.length} products saved to ${filePath}`);
     } catch (error) {
         log.error("Error writing to CSV:", error);
     }
@@ -152,12 +152,12 @@ function findImage($) {
                     image: image || 'N/A',
                     link: url,
                 });
-                log.info(`✅ Collected: ${title}`);
+                log.info(` Collected: ${title}`);
             }
         },
 
         async failedRequestHandler({ request }) {
-            log.warning(`❌ Request failed: ${request.url}`);
+            log.warning(` Request failed: ${request.url}`);
         },
     });
 

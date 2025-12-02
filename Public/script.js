@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('main-section').classList.remove('opacity-0', 'translate-y-4');
   }, 200);
 
-  // Helper: Update progress bar
+
   function updateProgress(percent, message) {
     if (!progressBarContainer || !progressBar) return;
     progressBarContainer.classList.remove('hidden');
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (width < 90) {
         width += 1;
         progressBar.style.width = width + '%';
-        setTimeout(animateProgress, 5000); // adjust speed
+        setTimeout(animateProgress, 4000); // adjust speed
       }
     }
   
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
       stopProgress = true;
       console.error(err);
-      logOutput.textContent = `❌ Error: ${err.message}`;
+      logOutput.textContent = `Error: ${err.message}`;
       progressBarContainer?.classList.add('hidden');
       progressBar.style.width = '0%';
     } finally {
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     } catch (err) {
-      logOutput.textContent = '❌ Failed to load cached data.';
+      logOutput.textContent = ' Failed to load cached data.';
       progressBarContainer?.classList.add('hidden');
       progressBar.style.width = '0%';
     } finally {
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
       resultsGrid.innerHTML = '';
       logOutput.textContent = data.message || 'Cache cleared.';
     } catch (err) {
-      logOutput.textContent = '❌ Failed to clear cache.';
+      logOutput.textContent = 'Failed to clear cache.';
     } finally {
       loader.classList.add('hidden');
     }

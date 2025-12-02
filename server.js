@@ -1,32 +1,32 @@
 const express = require('express');
-const { exec } = require('child_process');
+const { execFile } = require('child_process'); // <-- Use execFile
+const util = require('util'); // <-- Import util
 const mongoose = require('mongoose');
 const path = require('path');
+
+// --- Promisify execFile ---
+const execFilePromise = util.promisify(execFile);
 
 const app = express();
 const PORT = 3000;
 
-// Serve static frontend files from 'public' folder
 app.use(express.static('public'));
 app.use(express.json());
 
 // --- Connect to MongoDB ---
-mongoose.connect('mongodb://127.0.0.1:27017/scraper_db', {
- 
-})
-.then(() => console.log('✅ Connected to MongoDB'))
-.catch(err => console.error('❌ MongoDB connection failed:', err));
+mongoose.connect('mongodb://127.0.0.1:27017/scraper_db')
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error(' MongoDB connection failed:', err));
 
-// --- Define Mongoose Schema ---
+// --- Mongoose Schema ---
 const scraperCacheSchema = new mongoose.Schema({
   query: { type: String, required: true, unique: true },
   results: { type: mongoose.Schema.Types.Mixed },
   last_updated: { type: Date, default: Date.now },
 });
-
 const ScraperCache = mongoose.model('ScraperCache', scraperCacheSchema);
 
-// --- Compare endpoint ---
+// --- Compare endpoint (FIXED & SECURE) ---
 app.post('/compare', async (req, res) => {
   const { productName, numPages, refresh } = req.body;
   if (!productName || !numPages) return res.status(400).send('Missing parameters');
@@ -43,41 +43,49 @@ app.post('/compare', async (req, res) => {
       );
     }
 
-    // 2️⃣ Run scraper
-    const command = `node compare.js "${productName}" ${numPages}`;
-    console.log(`🚀 Running: ${command}`);
+    // 2️ Run scraper with execFile
+    const scriptPath = path.join(__dirname, 'compare.js');
+    const args = [productName, numPages.toString()];
 
-    exec(command, async (error, stdout, stderr) => {
-      if (error) {
-        console.error('Execution Error:', stderr);
-        return res.status(500).send(`Scraper error: ${stderr}`);
-      }
+    console.log(`🚀 Running: node ${scriptPath} "${productName}" ${numPages}`);
 
-      let jsonData;
-      try {
-        jsonData = JSON.parse(stdout);
-      } catch (parseError) {
-        console.error('JSON Parse Error:', parseError, stdout);
-        return res.status(500).send('Invalid JSON from scraper');
-      }
-
-      // 3️⃣ Store/Update cache
-      await ScraperCache.findOneAndUpdate(
-        { query: productName },
-        { results: jsonData, last_updated: Date.now() },
-        { upsert: true, new: true }
-      );
-
-      res.json(jsonData.results || []);
+    // This 'try...catch' block will NOW catch all errors
+    const { stdout, stderr } = await execFilePromise('node', [scriptPath, ...args], {
+      maxBuffer: 1024 * 1024 * 10 // 10MB buffer
     });
 
+    if (stderr) {
+      // This will show logs from scrapers, matchers, etc.
+      console.error('Execution Stderr:', stderr);
+    }
+
+    let jsonData;
+    try {
+      jsonData = JSON.parse(stdout);
+    } catch (parseError) {
+      console.error('JSON Parse Error:', parseError, stdout);
+      // This error means stdout is *still* contaminated
+      return res.status(500).send('Invalid JSON from scraper'); 
+    }
+
+    // 3️ Store/Update cache
+    await ScraperCache.findOneAndUpdate(
+      { query: productName },
+      { results: jsonData, last_updated: Date.now() },
+      { upsert: true, new: true }
+    );
+
+    res.json(jsonData.results || []);
+
   } catch (err) {
+    // This catches errors from execFilePromise (script crashing)
     console.error('Server Error:', err);
-    res.status(500).send('Server error');
+    // Send the REAL error message to the frontend
+    res.status(500).send(err.stderr || err.message || 'Server error'); 
   }
 });
 
-// --- Get all cached products ---
+// --- Other routes (no changes) ---
 app.get('/cache', async (req, res) => {
   try {
     const items = await ScraperCache.find().sort({ last_updated: -1 });
@@ -94,7 +102,6 @@ app.get('/cache', async (req, res) => {
   }
 });
 
-// --- Get cached product names only ---
 app.get('/cache/names', async (req, res) => {
   try {
     const items = await ScraperCache.find().sort({ last_updated: -1 });
@@ -106,11 +113,10 @@ app.get('/cache/names', async (req, res) => {
   }
 });
 
-// --- Clear all cache ---
 app.delete('/cache', async (req, res) => {
   try {
     await ScraperCache.deleteMany({});
-    res.json({ message: '✅ All cached products cleared.' });
+    res.json({ message: ' All cached products cleared.' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Failed to clear cache');
