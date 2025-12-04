@@ -47,7 +47,7 @@ app.post('/compare', async (req, res) => {
     const scriptPath = path.join(__dirname, 'compare.js');
     const args = [productName, numPages.toString()];
 
-    console.log(`🚀 Running: node ${scriptPath} "${productName}" ${numPages}`);
+    console.log(`Running: node ${scriptPath} "${productName}" ${numPages}`);
 
     // This 'try...catch' block will NOW catch all errors
     const { stdout, stderr } = await execFilePromise('node', [scriptPath, ...args], {
@@ -125,5 +125,5 @@ app.delete('/cache', async (req, res) => {
 
 // --- Start server ---
 app.listen(PORT, () => {
-  console.log(`🎉 Server running at http://localhost:${PORT}`);
+  console.log(` Server running at http://localhost:${PORT}`);
 });

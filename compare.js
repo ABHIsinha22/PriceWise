@@ -1,5 +1,6 @@
 // Import necessary Node.js modules
-const { exec } = require('child_process');
+// CHANGED: Use execFile instead of exec for better Windows compatibility
+const { execFile } = require('child_process'); 
 const fs = require('fs');
 const csv = require('csv-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
@@ -68,12 +69,11 @@ async function main() {
         const amazonScraperPath = path.join(__dirname, 'amazon-scraper.js');
         const flipkartScraperPath = path.join(__dirname, 'flipkart-scraper.js');
 
-        const amazonCommand = `node "${amazonScraperPath}" "${productName}" ${numPages}`;
-        const flipkartCommand = `node "${flipkartScraperPath}" "${productName}" ${numPages}`;
-
+        // CHANGED: We now pass the executable ('node') and arguments array separately.
+        // This fixes the Windows issue where spaces in paths or quotes in names broke the command.
         await Promise.all([
-            runScript(amazonCommand),
-            runScript(flipkartCommand)
+            runScript('node', [amazonScraperPath, productName, numPages]),
+            runScript('node', [flipkartScraperPath, productName, numPages])
         ]);
 
         output.logs.push(' Scrapers finished. Reading result files...');
@@ -132,18 +132,17 @@ async function main() {
     } catch (error) {
         output.logs.push(` An error occurred: ${error.message}`);
     } finally {
-
         console.log(JSON.stringify(output));
     }
 }
 
 
-
-
-function runScript(command) {
+// CHANGED: Updated runScript to use execFile and accept args array
+function runScript(executable, args) {
     return new Promise((resolve, reject) => {
-        exec(command, { maxBuffer: 1024 * 5000 }, (error, stdout, stderr) => {
-            // Log all output from the child script to stderr
+        // execFile bypasses the shell (cmd.exe), handling spaces/quotes automatically
+        execFile(executable, args, { maxBuffer: 1024 * 5000 }, (error, stdout, stderr) => {
+            // Log all output from the child script to stderr so it doesn't pollute the JSON stdout
             if (stdout) console.error(`[Scraper STDOUT]: ${stdout}`);
             if (stderr) console.error(`[Scraper STDERR]: ${stderr}`);
 
